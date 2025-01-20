@@ -1,0 +1,68 @@
+﻿@page "/user"
+@using Web.Blazor1.ServiceInterfaces
+
+<h3>UserLogIn</h3>
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IAuthService _authService
+
+<EditForm Model="@dto" OnValidSubmit="LogIn">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Login:</label>
+        <InputText @bind-Value="@dto.Login" class="form-control" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="@dto.Password" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-danger">Log In</button>
+</EditForm>
+
+
+
+<button class="btn btn-danger" @onclick="() => TestAuthorize()">TestAuthorize</button>
+<p>@chelav</p>
+
+
+@code {
+    private UserInsertDto dto = new();
+    private string chelav="chelav";
+
+    private async Task LogIn()
+    {
+        try
+        {
+            var result = await _authService.Login(dto.Login, dto.Password);
+            Console.WriteLine(result);
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine($"exception: {ex.Message}");
+        }
+
+    }
+
+    private async Task TestAuthorize()
+    {
+        var result = await _authService.AuthorizeTest();
+        if (result)
+        {
+            chelav = "elav";
+        }
+
+    }
+
+    
+    public class UserInsertDto
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
+    }
+} 
