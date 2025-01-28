@@ -3,7 +3,7 @@
 @using MudBlazor
 @using Web.Blazor2.Dtos
 @using Web.Blazor2.ServiceInterfaces
-
+@inject NavigationManager Navigation
 
 <MudCard Elevation="10">
     <MudGrid>
@@ -57,6 +57,7 @@
         if (resultt)
         {
             result = "true";
+            Navigation.NavigateTo("/tasks");
         }
         else
         {
