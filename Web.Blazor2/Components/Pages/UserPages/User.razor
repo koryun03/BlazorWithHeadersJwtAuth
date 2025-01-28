@@ -1,59 +1,52 @@
 ﻿@page "/user"
-@using Web.Blazor1.ServiceInterfaces
+@using Web.Blazor2.Dtos
+@using Web.Blazor2.ServiceInterfaces
+@inject IAuthService _authService;
+@inject ITaskService _taskService;
+@inject MudBlazor.ISnackbar snackBar
 
-<h3>UserLogIn</h3>
-@inject HttpClient Http
-@inject NavigationManager Navigation
-@inject IAuthService _authService
-
-<EditForm Model="@dto" OnValidSubmit="LogIn">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div>
-        <label>Login:</label>
-        <InputText @bind-Value="@dto.Login" class="form-control" />
-    </div>
-
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="@dto.Password" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-danger">Log In</button>
-</EditForm>
+<MudCard Elevation="10">
+    <MudGrid>
+        <MudItem xs="4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">
+                        Add / Edit
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent> 
+                <MudTextField @bind-Value="dto.Login" Label="Login" Variant="Variant.Filled" Margin="Margin.Normal"></MudTextField>
+                <MudTextField @bind-Value="dto.Password" Label="Password" Variant="Variant.Filled" Margin="Margin.Normal"></MudTextField>
+                <br \>
+                <MudButton Variant="Variant.Filled" @onclick="LogIn">Mutq</MudButton>
+            </MudCardContent>
+        </MudItem>
+    </MudGrid>
+</MudCard>
 
 
-
+<br \>
 <button class="btn btn-danger" @onclick="() => TestAuthorize()">TestAuthorize</button>
 <p>@chelav</p>
+<br \>
 
-
-
-<EditForm Model="@dto" OnValidSubmit="Register">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div>
-        <label>Login:</label>
-        <InputText @bind-Value="@dto.Login" class="form-control" />
-    </div>
-
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="@dto.Password" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-danger">Register</button>
-</EditForm>
 
 <p>@reg</p>
+<br \>
+
+
+<a class="btn btn-warning" href="/tasks">Tasks</a>
+
 
 
 @code {
+
     private UserInsertDto dto = new();
-    private string chelav=" ";
-    private string reg="Reg";
+
+    private string chelav = " ";
+    private string reg = "Reg";
+    private string searchString="";
 
     private async Task LogIn()
     {
@@ -93,7 +86,7 @@
             if (result)
             {
                 reg = "regelav";
-            }  
+            }
             else
             {
                 reg = "user is already registered";
@@ -105,6 +98,11 @@
             Console.WriteLine($"exception: {ex.Message}");
         }
 
+    }
+
+    private bool Search(TaskDto taskDto)
+    {
+        return false;
     }
 
     public class UserInsertDto

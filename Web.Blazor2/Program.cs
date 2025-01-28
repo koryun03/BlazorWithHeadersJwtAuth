@@ -1,7 +1,8 @@
 using System.Net.Http.Headers;
-using Web.Blazor1.Components;
-using Web.Blazor1.ServiceInterfaces;
-using Web.Blazor1.Services;
+using MudBlazor.Services;
+using Web.Blazor2.Components;
+using Web.Blazor2.ServiceInterfaces;
+using Web.Blazor2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//builder.Services.AddMudServices();
+
+//builder.Services.AddRazorPages();
+//builder.Services.AddServerSideBlazor();
+//builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7235/") });
 builder.Services.AddHttpContextAccessor();
-
 
 builder.Services.AddScoped(async sp =>
 {
@@ -33,7 +39,9 @@ builder.Services.AddScoped(async sp =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
-//builder.Services.AddScoped<ICookieService, CookieService>();
+
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
@@ -45,10 +53,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseAuthentication();?????????
-//app.UseAuthorization();?????????
-
 app.UseHttpsRedirection();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.UseStaticFiles();
 app.UseAntiforgery();

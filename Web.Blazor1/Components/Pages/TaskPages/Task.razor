@@ -3,8 +3,10 @@
 @using System.Text.Json
 @using Web.Blazor1.ServiceInterfaces
 
+@inject ITaskService _taskService;
 @inject IAuthService _authService;
 @inject NavigationManager NavigationManager
+@rendermode InteractiveServer //???
 
 <a class="btn btn-primary mb-2" href="/createProduct">Create New Product</a>
 
@@ -25,95 +27,25 @@
                 <td>@product.Description</td>
                 <td>@product.State</td>
                 <td>@product.IsCompleted</td>
-                @*  <td>
+                <td>
                     <a class="btn btn-warning" href="/updateProduct/@product.Id">Edit</a>
-                    <button class="btn btn-danger" @onclick="() => Delete(product.Id)">Delete</button>
-                </td> *@
+                    @* <button class="btn btn-danger" @onclick="() => Delete(product.Id)">Delete</button> *@
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
-<button class="btn btn-danger" @onclick="() => Logout()">Logout</button>
-
-@if ( _authService.GetToken() == null)
-{
-    <p> avtorizacia chi ele</p>
-}
-else
-{
-    <p>exela</p>
-}
 
 @code {
+
     private List<TaskDto> dtos = new();
     private string errorMessage;
 
-    // var url = "https://localhost:7235/api/Test/GetAllTasks";
-
     // protected override async Task OnInitializedAsync()
     // {
-
-
-    // try
-    // {
-    //     // Извлечение токена из cookies
-    //     var token = GetCookieValue("testttcoookie");
-    //     if (string.IsNullOrEmpty(token))
-    //     {
-    //         NavigationManager.NavigateTo("/login");
-    //         return ;
-    //     }
-
-    //     // Добавление токена в заголовок Authorization
-    //     HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-    //     // Выполнение запроса
-    //     var response = await HttpClient.GetAsync("api/tasks/GetAllTasks");
-
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         var json = await response.Content.ReadAsStringAsync();
-    //         dtos = JsonSerializer.Deserialize<List<TaskDto>>(json, new JsonSerializerOptions
-    //             {
-    //                 PropertyNameCaseInsensitive = true
-    //             });
-    //     }
-    //     else
-    //     {
-    //         errorMessage = $"Ошибка: {response.ReasonPhrase}";
-    //     }
+    //     dtos = await _taskService.GetAllTasks();
     // }
-    // catch (Exception ex)
-    // {
-    //     errorMessage = "Ошибка при выполнении запроса: " + ex.Message;
-    // }
-    ////  dtos = await _productService.GetAllAsync();
-    // }
-
-    // private async Task Delete(int id)
-    // {
-    //     if (id != null)
-    //     {
-    //         await _productService.DeleteAsync(id);
-    //         dtos = await _productService.GetAllAsync();
-    //     }
-    // }
-
-    // private async string GetCookieValue(string cookieName)
-    // {
-    //  //   _httpContextAccessor.HttpContext.Response.Cookies.Delete("testttcoookie");
-    //     var cookies = new HttpRequestMessage().Headers.GetCookies();
-    //     var cookies = new HttpRequestMessage().Headers.();
-    //     return cookies[cookieName]?.Value;
-    // }
-
-
-    private   Task Logout()
-    {
-        _authService.Logout();
-        return null;
-    }
 
     public class TaskDto
     {
@@ -124,10 +56,27 @@ else
         public bool IsCompleted { get; set; }
         public int UserId { get; set; }
     }
+
     public enum StateEnum
     {
         None = 1,
         InProcess = 2,
         Done = 3,
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

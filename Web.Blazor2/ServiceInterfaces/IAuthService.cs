@@ -1,4 +1,4 @@
-﻿namespace Web.Blazor1.ServiceInterfaces
+﻿namespace Web.Blazor2.ServiceInterfaces
 {
     public interface IAuthService
     {

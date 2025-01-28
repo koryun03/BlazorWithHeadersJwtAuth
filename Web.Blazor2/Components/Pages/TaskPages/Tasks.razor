@@ -1,0 +1,101 @@
+﻿@page "/tasks"
+@using Web.Blazor2.Dtos
+@using Web.Blazor2.ServiceInterfaces
+@using System.Threading.Tasks;
+@inject IAuthService _authService;
+@inject ITaskService _taskService;
+@inject MudBlazor.ISnackbar snackBar
+
+<MudTable Elevation="10" Items="taskDtos" Filter="new Func<TaskDto, bool>(Search)" @bind-task="taskDto">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Customer
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search Customer..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" />
+    </ToolBarContent>
+
+    <HeaderContent>
+        @* <MudTh>id</MudTh> *@
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<TaskDto,object>(x => x.Id)" InitialDirection="SortDirection.Ascending">Id</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<TaskDto,object>(x => x.Title)">Title</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<TaskDto,object>(x => x.Description)">Description</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Title">@context.Title</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        
+       @*  <MudTd>
+                <MudFab @onclick="@(()=>Update(context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit Size="Size.Small"/>
+                <MudFab @onclick="@(()=>Delete(context.Id))" Color="Color.Primary" Icon="@Icons.Material.Filled.Delete Size="Size.Small"/>
+        </MudTd> *@
+        
+        <MudTd>
+            <MudFab @onclick="@(()=>Update(context.Id))" Color="Color.Primary" Size="Size.Small" />
+            <MudFab @onclick="@(()=>Delete(context.Id))" Color="Color.Primary" Size="Size.Small" />
+        </MudTd>
+
+    </RowTemplate>
+
+
+</MudTable>
+
+<a class="btn btn-warning" href="/createtask">Add New Task</a>
+
+
+@code {
+
+    private TaskDto taskDto = new();
+    private List<TaskDto> taskDtos = new();
+
+    private string searchString = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        taskDtos = await GetAllTasks();
+
+    }
+
+    private async Task<List<TaskDto>> GetAllTasks()
+    {
+        try
+        {
+            var result = await _taskService.GetAllTasks();
+            return result ?? new List<TaskDto>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"exception: {ex.Message}");
+            return new List<TaskDto>();
+        }
+    }
+
+
+    public async Task Update(int id)
+    {
+
+    }
+
+    public async Task Delete(int id)
+    {
+
+    }
+
+    private bool Search(TaskDto taskDto)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+
+        return taskDto.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+               taskDto.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+    }
+}

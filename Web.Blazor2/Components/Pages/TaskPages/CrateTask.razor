@@ -1,0 +1,66 @@
+﻿@page "/createtask"
+@inject ITaskService _taskService;
+@using MudBlazor
+@using Web.Blazor2.Dtos
+@using Web.Blazor2.ServiceInterfaces
+
+
+<MudCard Elevation="10">
+    <MudGrid>
+        <MudItem xs="4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">
+                        Add
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+
+                <MudTextField @bind-Value="taskDto.Title"
+                Label="Title"
+                Variant="Variant.Filled"
+                Margin="Margin.Normal"
+                FullWidth="true"
+                Style="min-width: 400px;">
+                </MudTextField>
+
+                <MudTextField @bind-Value="taskDto.Description"
+                Label="Description"
+                Variant="Variant.Filled"
+                Margin="Margin.Normal"
+                FullWidth="true"
+                Style="min-width: 400px;">
+                </MudTextField>
+
+
+                <br />
+                <MudButton Variant="Variant.Filled" @onclick="Insert">Add</MudButton>
+            </MudCardContent>
+        </MudItem>
+    </MudGrid>
+</MudCard>
+
+<br />
+<p>@result</p>
+<br />
+
+
+@code {
+    private MudForm _form;
+    private TaskInsertDto taskDto = new TaskInsertDto();
+    private string result = "";
+
+    private async Task Insert()
+    {
+        var resultt=await _taskService.Insert(taskDto);
+        if (resultt)
+        {
+            result = "true";
+        }
+        else
+        {
+            result = "false";
+        }
+    }
+}

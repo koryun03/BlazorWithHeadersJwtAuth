@@ -1,9 +1,8 @@
 ﻿using System.Net.Http.Headers;
-using Web.Blazor1.ServiceInterfaces;
+using Web.Blazor2.ServiceInterfaces;
 
-namespace Web.Blazor1.Services
+namespace Web.Blazor2.Services
 {
-
     public class AuthService : IAuthService
     {
         private readonly HttpClient _httpClient;
@@ -85,5 +84,4 @@ namespace Web.Blazor1.Services
     {
         public string Token { get; set; }
     }
-
 }

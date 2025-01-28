@@ -7,7 +7,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController(ITaskService _taskService) : ControllerBase
+    public class TaskController(ITaskService _taskService) : ControllerBase
     {
         [Authorize]
         [HttpPost("Insert")]
